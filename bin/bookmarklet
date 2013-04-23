@@ -1,0 +1,86 @@
+#!/usr/bin/env node
+
+var path = require('path'),
+    fs = require('fs'),
+    util = require('util'),
+    bookmarklet = require('../bookmarklet');
+
+
+//
+// Input parsing
+//
+
+var args = process.argv.slice(2);
+
+function help() {
+    util.puts(['Bookmarklet v' + bookmarklet.version.join('.') +
+               ' usage: bookmarklet source [destination]',
+               '',
+               'source      - path to file to read from or `-` for stdin',
+               'destination - path to file to write to'
+              ].join('\n') + '\n');
+}
+
+function die(msg) {
+    msg && util.puts('[ERROR] bookmarklet: ' + msg);
+    process.exit(1);
+}
+
+function warn(msg) {
+    util.puts('[WARN] bookmarklet: ' + msg);
+}
+
+if (args.length == 0 || {'-h':1, '--help':1}[args[0]]) {
+    help();
+    process.exit(0);
+}
+
+if (args.length > 2) {
+    die('invalid arguments, run with --help to see usage.\n\n');
+}
+
+var source = args[0],
+    destination = args[1];
+
+if (source && source[0] != '/' && source != '-') {
+    source = path.join(process.cwd(), source);
+}
+if (destination && destination[0] != '/') {
+    destination = path.join(process.cwd(), destination);
+}
+
+
+//
+// Main
+//
+
+function dataCallback(e, data) {
+    if (e) {
+        die(e.message);
+    }
+
+    data = bookmarklet.parseFile(data);
+
+    if (data.errors) {
+        die(data.errors.join('\n'));
+    }
+
+    var code = bookmarklet.convert(data.code, data.options);
+    util.print(code + '\n');
+};
+
+if (source != '-') {
+    fs.readFile(source, 'utf8', dataCallback);
+} else {
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+
+    var buffer = '';
+    process.stdin.on('data', function(data) {
+        buffer += data;
+    });
+
+    process.stdin.on('end', function() {
+        dataCallback(false, buffer);
+    });
+}

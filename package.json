@@ -1,0 +1,20 @@
+{
+  "name": "bookmarklet",
+  "version": "0.0.1",
+  "description": "A JavaScript bookmarklet generator",
+  "main": "bookmarklet.js",
+  "bin": {"bookmarklet": "./bin/bookmarklet"},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "bookmarklet"
+  ],
+  "author": "Peter Coles",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "uglify-js": "2.2.x"
+  }
+}
