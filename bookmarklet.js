@@ -20,7 +20,8 @@ var str = 1,
             email: str,
             url: str,
             license: str,
-            script: list
+            script: list,
+            style: list
         }
     };
 
@@ -53,9 +54,15 @@ function minify(code) {
 function convert(code, options) {
     code = minify(code);
 
+    if(options.style) {
+        for (var i=0, len=options.style.length; i<len; i++) {
+            code += 'var link = document.createElement("link"); link.rel="stylesheet"; link.href = "' + quoteEscape(options.style[i]) + '"; document.head.appendChild(link);';
+        }
+    }
+
     if (options.script) {
-        for (var i=0, len=options.script.length; i<len; i++) {
-            code = loadScript(code, options.script[i]);
+        for (var j=0, length=options.script.length; j<length; j++) {
+            code = loadScript(code, options.script[j]);
         }
         code = minify(code);
     }
