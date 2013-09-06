@@ -53,18 +53,20 @@ function minify(code) {
 
 function convert(code, options) {
     code = minify(code);
-
-    if(options.style) {
-        for (var i=0, len=options.style.length; i<len; i++) {
-            code += 'var link = document.createElement("link"); link.rel="stylesheet"; link.href = "' + quoteEscape(options.style[i]) + '"; document.head.appendChild(link);';
-        }
-    }
+    var stylesCode = '';
 
     if (options.script) {
-        for (var j=0, length=options.script.length; j<length; j++) {
-            code = loadScript(code, options.script[j]);
+        for (var i=0, len=options.script.length; i<len; i++) {
+            code = loadScript(code, options.script[i]);
         }
         code = minify(code);
+    }
+
+    if(options.style) {
+        for (var j=0, length=options.style.length; j<length; j++) {
+            stylesCode += 'var link = document.createElement("link"); link.rel="stylesheet"; link.href = "' + quoteEscape(options.style[j]) + '"; document.head.appendChild(link);';
+        }
+        code = minify(stylesCode) + code;
     }
 
     code = '(function(){' + code + '})()';
