@@ -3,7 +3,7 @@
 var path = require('path'),
     fs = require('fs'),
     util = require('util'),
-    bookmarklet = require('../bookmarklet');
+    bookmarklet = require('bookmarklet');
     // XXX - what's the right way to do this in dev vs prod?
     // bookmarklet = require('../bookmarklet');
 
