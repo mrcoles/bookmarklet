@@ -37,12 +37,12 @@ function loadScript(code, path) {
             // + (isJQuery ? '})(jQuery.noConflict(true))' : '')
             + '}'
             + 'var s = document.createElement("script");'
-            + 's.src = "' + quoteEscape(path) + '";'
             + 'if (s.addEventListener) {'
             + '  s.addEventListener("load", callback, false)'
             + '} else if (s.readyState) {'
             + '  s.onreadystatechange = callback'
             + '}'
+            + 's.src = "' + quoteEscape(path) + '";'
             + 'document.body.appendChild(s);'
            );
 }
