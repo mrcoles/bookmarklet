@@ -62,9 +62,9 @@ function convert(code, options) {
         code = minify(code);
     }
 
-    if(options.style) {
+    if (options.style) {
         for (var j=0, length=options.style.length; j<length; j++) {
-            stylesCode += 'var link = document.createElement("link"); link.rel="stylesheet"; link.href = "' + quoteEscape(options.style[j]) + '"; document.head.appendChild(link);';
+            stylesCode += 'var link = document.createElement("link"); link.rel="stylesheet"; link.href = "' + quoteEscape(options.style[j]) + '"; document.body.appendChild(link);';
         }
         code = minify(stylesCode) + code;
     }
