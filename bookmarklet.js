@@ -56,6 +56,7 @@ function convert(code, options) {
     var stylesCode = '';
 
     if (options.script) {
+        options.script = options.script.reverse();
         for (var i=0, len=options.script.length; i<len; i++) {
             code = loadScript(code, options.script[i]);
         }
