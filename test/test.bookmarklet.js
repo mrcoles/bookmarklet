@@ -12,4 +12,7 @@ var $ = jQuery.noConflict(true),
     testPassed = testElement.css('font-family') == 'ok';
     testElement.remove();
 
-alert('p tags: ' + pCount + '\ndiv tags: ' + divCount + '\nDid the test element got styled? ' + (testPassed ? 'Of course!' : 'Nope.'));
+alert('p tags: ' + pCount +
+      '\ndiv tags: ' + divCount +
+      '\nDid the test element get styled? ' +
+      (testPassed ? 'Of course!' : 'Nope.'));
