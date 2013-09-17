@@ -19,7 +19,9 @@ function help() {
                ' usage: bookmarklet source [destination]',
                '',
                'source      - path to file to read from or `-` for stdin',
-               'destination - path to file to write to'
+               'destination - path to file to write to',
+               '',
+               'More info: https://github.com/mrcoles/bookmarklet'
               ].join('\n') + '\n');
 }
 
