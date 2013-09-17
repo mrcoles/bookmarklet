@@ -20,7 +20,8 @@ var str = 1,
             email: str,
             url: str,
             license: str,
-            script: list
+            script: list,
+            style: list
         }
     };
 
@@ -36,12 +37,12 @@ function loadScript(code, path) {
             // + (isJQuery ? '})(jQuery.noConflict(true))' : '')
             + '}'
             + 'var s = document.createElement("script");'
-            + 's.src = "' + quoteEscape(path) + '";'
             + 'if (s.addEventListener) {'
             + '  s.addEventListener("load", callback, false)'
             + '} else if (s.readyState) {'
             + '  s.onreadystatechange = callback'
             + '}'
+            + 's.src = "' + quoteEscape(path) + '";'
             + 'document.body.appendChild(s);'
            );
 }
@@ -52,12 +53,21 @@ function minify(code) {
 
 function convert(code, options) {
     code = minify(code);
+    var stylesCode = '';
 
     if (options.script) {
+        options.script = options.script.reverse();
         for (var i=0, len=options.script.length; i<len; i++) {
             code = loadScript(code, options.script[i]);
         }
         code = minify(code);
+    }
+
+    if (options.style) {
+        for (var j=0, length=options.style.length; j<length; j++) {
+            stylesCode += 'var link = document.createElement("link"); link.rel="stylesheet"; link.href = "' + quoteEscape(options.style[j]) + '"; document.body.appendChild(link);';
+        }
+        code = minify(stylesCode) + code;
     }
 
     code = '(function(){' + code + '})()';
