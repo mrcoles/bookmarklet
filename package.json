@@ -1,7 +1,7 @@
 {
   "name": "bookmarklet",
   "version": "0.0.4",
-  "description": "A JavaScript bookmarklet compiler with greasmonkey userscript-like metadata options",
+  "description": "A JavaScript bookmarklet compiler with greasemonkey userscript-like metadata options",
   "main": "bookmarklet.js",
   "bin": {"bookmarklet": "./bin/bookmarklet"},
   "scripts": {
