@@ -22,3 +22,23 @@ In addition, any css files included with `@style` will be injected.
 This project is new and open to suggestions & pull requests.
 
 Also, if you’re just looking for a quick way to throw together a bookmarklet, try my [browser-based bookmarklet creator](http://mrcoles.com/bookmarklet/).
+
+### Installation
+
+The dependency can be found on [NPM as “bookmarklet”](https://www.npmjs.org/package/bookmarklet). You can install it with:
+
+```bash
+npm install bookmarklet
+```
+
+### Usage
+
+You can easily see usage by running `bookmarklet -h`:
+
+```bash
+> bookmarklet -h
+Bookmarklet v0.0.1 usage: bookmarklet source [destination]
+
+source      - path to file to read from or `-` for stdin
+destination - path to file to write to
+```
