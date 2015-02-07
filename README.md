@@ -28,7 +28,7 @@ Also, if you’re just looking for a quick way to throw together a bookmarklet, 
 The dependency can be found on [NPM as “bookmarklet”](https://www.npmjs.org/package/bookmarklet). You can install it with:
 
 ```bash
-npm install bookmarklet
+npm install -g bookmarklet
 ```
 
 ### Usage
