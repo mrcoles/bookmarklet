@@ -2,7 +2,6 @@
 
 var path = require('path'),
     fs = require('fs'),
-    util = require('util'),
     bookmarklet = require('bookmarklet');
     // XXX - what's the right way to do this in dev vs prod?
     // bookmarklet = require('../bookmarklet');
@@ -15,26 +14,26 @@ var path = require('path'),
 var args = process.argv.slice(2);
 
 function help() {
-    util.puts(['Bookmarklet v' + bookmarklet.version.join('.') +
-               ' usage: bookmarklet source [destination]',
-               '',
-               'source      - path to file to read from or `-` for stdin',
-               'destination - path to file to write to',
-               '',
-               'More info: https://github.com/mrcoles/bookmarklet'
-              ].join('\n') + '\n');
+    console.error(['Bookmarklet v' + bookmarklet.version.join('.') +
+                   ' usage: bookmarklet source [destination]',
+                   '',
+                   'source      - path to file to read from or `-` for stdin',
+                   'destination - path to file to write to',
+                   '',
+                   'More info: https://github.com/mrcoles/bookmarklet'
+                  ].join('\n') + '\n');
 }
 
 function die(msg) {
-    msg && util.puts('[ERROR] bookmarklet: ' + msg);
+    msg && console.error('[ERROR] bookmarklet: ' + msg);
     process.exit(1);
 }
 
 function warn(msg) {
-    util.puts('[WARN] bookmarklet: ' + msg);
+    console.error('[WARN] bookmarklet: ' + msg);
 }
 
-if (args.length == 0 || {'-h':1, '--help':1}[args[0]]) {
+if (args.length == 0 || args.filter(arg => arg == '-h' || arg == '--help').length) {
     help();
     process.exit(0);
 }
@@ -70,8 +69,11 @@ function dataCallback(e, data) {
     }
 
     var code = bookmarklet.convert(data.code, data.options);
-    util.print(code + '\n');
-    if (destination) fs.writeFileSync(destination, code);
+    if (destination) {
+        fs.writeFileSync(destination, code);
+    } else {
+        console.log(code);
+    }
 };
 
 if (source != '-') {
@@ -81,11 +83,6 @@ if (source != '-') {
     process.stdin.setEncoding('utf8');
 
     var buffer = '';
-    process.stdin.on('data', function(data) {
-        buffer += data;
-    });
-
-    process.stdin.on('end', function() {
-        dataCallback(false, buffer);
-    });
+    process.stdin.on('data', data => buffer += data);
+    process.stdin.on('end', () => dataCallback(false, buffer));
 }
