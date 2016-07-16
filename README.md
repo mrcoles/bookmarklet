@@ -19,7 +19,7 @@ NOTE: currently with script includes you have to handle `noConflict` scenarios y
 
 In addition, any css files included with `@style` will be injected.
 
-This project is new and open to suggestions & pull requests.
+This project is open to suggestions & pull requests.
 
 Also, if you’re just looking for a quick way to throw together a bookmarklet, try my [browser-based bookmarklet creator](http://mrcoles.com/bookmarklet/).
 
