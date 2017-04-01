@@ -34,7 +34,7 @@ function quoteEscape(x) {
 }
 
 function loadScript(code, path, loadOnce) {
-    var id = `script_${md5(path)}`;
+    var id = `script_${md5(path).substring(0, 7)}`;
     return (`
         function callback(){
             ${code}
@@ -59,7 +59,7 @@ function loadScript(code, path, loadOnce) {
 }
 
 function loadStyle(code, path, loadOnce) {
-    var id = `style_${md5(path)}`;
+    var id = `style_${md5(path).substring(0, 7)}`;
     return (`${code}
         if (!document.getElementById("${id}")) {
             var link = document.createElement("link");
