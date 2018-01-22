@@ -42,3 +42,7 @@ Bookmarklet v0.0.1 usage: bookmarklet source [destination]
 source      - path to file to read from or `-` for stdin
 destination - path to file to write to
 ```
+
+### Testing
+
+A very basic test script can be run via `bash test/run.sh`
