@@ -1,5 +1,5 @@
 
-var version = [0, 0, 6];
+var version = [0, 0, 8];
 
 var uglify = require('uglify-js');
 
