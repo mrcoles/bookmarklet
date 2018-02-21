@@ -1,8 +1,8 @@
 // ==Bookmarklet==
 // @name Test
 // @author Peter
-// @style data:text/css,imaginary%7Bfont-family%3A%20%22ok%22%7D
-// @script https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
+// @style !loadOnce data:text/css,imaginary%7Bfont-family%3A%20%22ok%22%7D
+// @script !loadOnce=false https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 // ==/Bookmarklet==
 
 const $ = jQuery.noConflict(true);

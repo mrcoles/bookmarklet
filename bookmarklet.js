@@ -1,4 +1,4 @@
-const version = [0, 0, 9];
+const version = [1, 0, 0];
 
 const babel = require('babel-core');
 const md5 = require('md5');
@@ -23,7 +23,6 @@ const metadata = {
     email: str,
     url: str,
     license: str,
-    loadOnce: bool,
     script: list,
     style: list
   }
@@ -33,14 +32,52 @@ function quoteEscape(x) {
   return x.replace('"', '\\"').replace("'", "\\'");
 }
 
+function extractOptions(path) {
+  // Returns {
+  //   path: the updated path string (minus any options)
+  //   opts: plain object of options
+  // }
+  //
+  // You can prefix a path with options in the form of:
+  //
+  // ```
+  // @style !loadOnce !foo=false https://example.com/foo.css
+  // ```
+  //
+  // If there is no `=`, then the value of the option defaults to `true`.
+  // Values get converted via JSON.parse if possible, o/w they're a string.
+  //
+  let opts = {};
+  while (true) {
+    let m = path.match(/^(\![^\s]+)\s+/);
+    if (m) {
+      path = path.substring(m.index + m[0].length);
+      let opt = m[1].substring(1).split('=');
+      opts[opt[0]] = opt[1] === undefined ? true : _fuzzyParse(opt[1]);
+    } else {
+      break;
+    }
+  }
+  return { path, opts };
+}
+
+const _fuzzyParse = val => {
+  try {
+    return JSON.parse(val);
+  } catch (e) {
+    return val;
+  }
+};
+
 function loadScript(code, path, loadOnce) {
-  let id = `script_${md5(path).substring(0, 7)}`;
+  loadOnce = !!loadOnce;
+  let id = `bookmarklet__script_${md5(path).substring(0, 7)}`;
   return `
         function callback(){
           ${code}
         }
 
-        if (!document.getElementById("${id}")) {
+        if (!${loadOnce} || !document.getElementById("${id}")) {
           var s = document.createElement("script");
           if (s.addEventListener) {
             s.addEventListener("load", callback, false)
@@ -48,7 +85,7 @@ function loadScript(code, path, loadOnce) {
             s.onreadystatechange = callback
           }
           if (${loadOnce}) {
-            s.id="${id}";
+            s.id = "${id}";
           }
           s.src = "${quoteEscape(path)}";
           document.body.appendChild(s);
@@ -59,12 +96,13 @@ function loadScript(code, path, loadOnce) {
 }
 
 function loadStyle(code, path, loadOnce) {
-  let id = `style_${md5(path).substring(0, 7)}`;
+  loadOnce = !!loadOnce;
+  let id = `bookmarklet__style_${md5(path).substring(0, 7)}`;
   return `${code}
-        if (!document.getElementById("${id}")) {
+        if (!${loadOnce} || !document.getElementById("${id}")) {
           var link = document.createElement("link");
           if (${loadOnce}) {
-              link.id="${id}";
+            link.id = "${id}";
           }
           link.rel="stylesheet";
           link.href = "${quoteEscape(path)}";
@@ -85,14 +123,16 @@ function convert(code, options) {
   if (options.script) {
     options.script = options.script.reverse();
     options.script.forEach(s => {
-      code = loadScript(code, s, options.loadOnce);
+      let { path, opts } = extractOptions(s);
+      code = loadScript(code, path, opts.loadOnce);
     });
     code = minify(code);
   }
 
   if (options.style) {
     options.style.forEach(s => {
-      stylesCode = loadStyle(stylesCode, s, options.loadOnce);
+      let { path, opts } = extractOptions(s);
+      stylesCode = loadStyle(stylesCode, path, opts.loadOnce);
     });
     code = minify(stylesCode) + code;
   }

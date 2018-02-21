@@ -9,9 +9,8 @@ More so, it supports a metadata block—modeled after the [greasemonkey userscri
     // ==Bookmarklet==
     // @name LoveGames
     // @author Old Gregg
-    // @style http://www.cornify.com/css/cornify.css
+    // @style !loadOnce http://www.cornify.com/css/cornify.css
     // @script https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
-    // @loadOnce true
     // ==/Bookmarklet==
 
 Most notably, you can specify any external scripts that you’d like your bookmarklet to include via the `@script` rule, which can be repeated as many times as you’d like.
@@ -20,7 +19,7 @@ NOTE: currently with script includes you have to handle `noConflict` scenarios y
 
 In addition, any css files included with `@style` will be injected.
 
-By default, every time the bookmark is hit, it will add the script and style tags again. This can be limited to only adding them on the first run by setting `@loadOnce` to `true`.
+By default, every time the bookmark is hit, it will add the script and style tags again. You customize each one per line by adding a `!loadOnce` declaration between the `@style` or `@script` param and the path for the asset. See the example above.
 
 This project is open to suggestions & pull requests.
 
