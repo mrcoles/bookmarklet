@@ -1,13 +1,16 @@
 {
   "name": "bookmarklet",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A JavaScript bookmarklet compiler with greasemonkey userscript-like metadata options",
   "main": "bookmarklet.js",
   "bin": {
-    "bookmarklet": "./bin/bookmarklet"
+    "bookmarklet": "bin/cli.js"
+  },
+  "engines": {
+    "node": ">= 6.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "bash test/run.sh"
   },
   "repository": "https://github.com/mrcoles/bookmarklet",
   "keywords": [
@@ -17,7 +20,9 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "md5": "^2.2.1",
-    "uglify-js": "3.3.x"
+    "uglify-js": "^3.3.11"
   }
 }
