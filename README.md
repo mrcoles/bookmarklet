@@ -2,6 +2,9 @@
 Bookmarklet: sane development, familiar format
 ==============================================
 
+[![Build Status](https://travis-ci.org/mrcoles/bookmarklet.svg?branch=master)](https://travis-ci.org/mrcoles/bookmarklet)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 Bookmarklet is a nodejs module for compiling bookmarklets in server-side code and directly from the shell. You can run it on any JavaScript file—it will minify it using uglify-js, wrap it in a self executing function, and return an escaped bookmarklet.
 
 More so, it supports a metadata block—modeled after the [greasemonkey userscript metadata block](http://wiki.greasespot.net/Metadata_Block)—to specify metadata, external stylesheets and script includes, which can look like this:
