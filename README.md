@@ -24,6 +24,8 @@ In addition, any css files included with `@style` will be injected.
 
 By default, every time the bookmark is hit, it will add the script and style tags again. You customize each one per line by adding a `!loadOnce` declaration between the `@style` or `@script` param and the path for the asset. See the example above.
 
+As of v1.0.0, this now uses Babel with the present "env" to make the code backwards compatible before minifying it.
+
 This project is open to suggestions & pull requests.
 
 Also, if you’re just looking for a quick way to throw together a bookmarklet, try my [browser-based bookmarklet creator](http://mrcoles.com/bookmarklet/).
