@@ -1,15 +1,18 @@
 
 var version = [0, 0, 8];
 
-var uglify = require('uglify-js');
+var uglify = require('uglify-js'),
+    md5 = require('md5');
 
 // metadata
 var str = 1,
     list = 2,
+    bool = 3,
 	metadata = {
         types: {
             string: str,
-            list: list
+            list: list,
+            boolean: bool
         },
         keys: {
             name: str,
@@ -20,6 +23,7 @@ var str = 1,
             email: str,
             url: str,
             license: str,
+            loadOnce: bool,
             script: list,
             style: list
         }
@@ -29,22 +33,44 @@ function quoteEscape(x) {
     return x.replace('"', '\\"').replace("'", "\\'");
 }
 
-function loadScript(code, path) {
-    return (''
-            + 'function callback(){'
-            // + (isJQuery ? '(function($){var jQuery=$;' : '')
-            + code
-            // + (isJQuery ? '})(jQuery.noConflict(true))' : '')
-            + '}'
-            + 'var s = document.createElement("script");'
-            + 'if (s.addEventListener) {'
-            + '  s.addEventListener("load", callback, false)'
-            + '} else if (s.readyState) {'
-            + '  s.onreadystatechange = callback'
-            + '}'
-            + 's.src = "' + quoteEscape(path) + '";'
-            + 'document.body.appendChild(s);'
-           );
+function loadScript(code, path, loadOnce) {
+    var id = `script_${md5(path).substring(0, 7)}`;
+    return (`
+        function callback(){
+            ${code}
+        }
+
+        if (!document.getElementById("${id}")) {
+            var s = document.createElement("script");
+            if (s.addEventListener) {
+                s.addEventListener("load", callback, false)
+            } else if (s.readyState) {
+                s.onreadystatechange = callback
+            }
+            if( ${loadOnce} ) {
+                s.id="${id}";
+            }
+            s.src = "${quoteEscape(path)}";
+            document.body.appendChild(s);
+        } else {
+            callback();
+        }
+    `);
+}
+
+function loadStyle(code, path, loadOnce) {
+    var id = `style_${md5(path).substring(0, 7)}`;
+    return (`${code}
+        if (!document.getElementById("${id}")) {
+            var link = document.createElement("link");
+            if( ${loadOnce} ){ 
+                link.id="${id}";
+            }
+            link.rel="stylesheet";
+            link.href = "${quoteEscape(path)}";
+            document.body.appendChild(link);
+        }
+    `);
 }
 
 function minify(code) {
@@ -58,20 +84,20 @@ function convert(code, options) {
     if (options.script) {
         options.script = options.script.reverse();
         for (var i=0, len=options.script.length; i<len; i++) {
-            code = loadScript(code, options.script[i]);
+            code = loadScript(code, options.script[i], options.loadOnce);
         }
         code = minify(code);
     }
 
     if (options.style) {
         for (var j=0, length=options.style.length; j<length; j++) {
-            stylesCode += 'var link = document.createElement("link"); link.rel="stylesheet"; link.href = "' + quoteEscape(options.style[j]) + '"; document.body.appendChild(link);';
+            stylesCode = loadStyle(stylesCode, options.style[j], options.loadOnce);
         }
         code = minify(stylesCode) + code;
     }
 
-    code = '(function(){' + code + '})()';
-    return 'javascript:' + encodeURIComponent(code);
+    code = `(function(){ ${code} })()`;
+    return `javascript:${encodeURIComponent(code)}`;
 }
 
 function parseFile(data) {
@@ -108,11 +134,13 @@ function parseFile(data) {
                             if (mdKeys[k] == mdTypes.list) {
                                 options[k] = options[k] || [];
                                 options[k].push(v);
+                            } else if (mdKeys[k] == mdTypes.boolean) {
+                                options[k] = (v.toLowerCase() == 'true');
                             } else {
-                                options[m[1]] = m[2];
+                                options[k] = v;
                             }
                         } else {
-                            warn('ignoring invalid metadata option: `' + k + '`');
+                            warn(`ignoring invalid metadata option: '${k}'`);
                         }
                     }
                 }
@@ -124,8 +152,7 @@ function parseFile(data) {
         }
 
         if (inMetadataBlock && i + 1 == lines.length) {
-            errors.push('missing metdata block closing `' +
-                        closeMetadata + '`');
+            errors.push(`missing metdata block closing '${closeMetadata}'`);
         }
     });
 
