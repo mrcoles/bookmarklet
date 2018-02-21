@@ -1,6 +1,6 @@
 {
   "name": "bookmarklet",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A JavaScript bookmarklet compiler with greasemonkey userscript-like metadata options",
   "main": "bookmarklet.js",
   "bin": {
@@ -18,6 +18,6 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "md5": "^2.2.1",
-    "uglify-js": "2.2.x"
+    "uglify-js": "3.3.x"
   }
 }

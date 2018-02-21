@@ -1,5 +1,5 @@
 
-var version = [0, 0, 7];
+var version = [0, 0, 8];
 
 var uglify = require('uglify-js'),
     md5 = require('md5');
@@ -74,7 +74,7 @@ function loadStyle(code, path, loadOnce) {
 }
 
 function minify(code) {
-    return uglify.minify(code, {fromString: true}).code;
+    return uglify.minify(code).code;
 }
 
 function convert(code, options) {
