@@ -84,16 +84,16 @@ function convert(code, options) {
 
   if (options.script) {
     options.script = options.script.reverse();
-    for (let i = 0, len = options.script.length; i < len; i++) {
-      code = loadScript(code, options.script[i], options.loadOnce);
-    }
+    options.script.forEach(s => {
+      code = loadScript(code, s, options.loadOnce);
+    });
     code = minify(code);
   }
 
   if (options.style) {
-    for (let j = 0, length = options.style.length; j < length; j++) {
-      stylesCode = loadStyle(stylesCode, options.style[j], options.loadOnce);
-    }
+    options.style.forEach(s => {
+      stylesCode = loadStyle(stylesCode, s, options.loadOnce);
+    });
     code = minify(stylesCode) + code;
   }
 
