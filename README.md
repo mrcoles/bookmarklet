@@ -12,7 +12,7 @@ More so, it supports a metadata block—modeled after the [greasemonkey userscri
     // ==Bookmarklet==
     // @name LoveGames
     // @author Old Gregg
-    // @style !loadOnce http://www.cornify.com/css/cornify.css
+    // @style !loadOnce https://mrcoles.com/media/css/silly.css
     // @script https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
     // ==/Bookmarklet==
 
