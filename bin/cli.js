@@ -16,14 +16,13 @@ if (['-V', '--version'].some(flag => args.indexOf(flag) !== -1)) {
 }
 
 function help() {
-  console.error(
-    `Bookmarklet v${bookmarklet.version.join(
-      '.'
-    )} usage: bookmarklet source [destination]
+  console.error(`
+Bookmarklet v${bookmarklet.version.join('.')}
 
-source      - path to file to read from or ` -
-      ` for stdin',
-destination - path to file to write to
+usage: bookmarklet source [destination]
+
+   source - path to file to read from or for stdin',
+   destination - path to file to write to
 
 More info: https://github.com/mrcoles/bookmarklet
     `
