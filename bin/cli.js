@@ -8,7 +8,7 @@ const bookmarklet = require('../bookmarklet');
 // Input parsing
 //
 
-var args = process.argv.slice(2);
+let args = process.argv.slice(2);
 
 if (['-V', '--version'].some(flag => args.indexOf(flag) !== -1)) {
   console.log(bookmarklet.version.join('.'));
@@ -38,23 +38,26 @@ function warn(msg) {
   console.error(`[WARN] bookmarklet: ${msg}`);
 }
 
+// help
+
 if (
   args.length == 0 ||
-  args.filter(arg => arg == '-h' || arg == '--help').length
+  args.some(arg => arg === '-h' || arg === '--help')
 ) {
   help();
   process.exit(0);
 }
 
+// file paths
+
 if (args.length > 2) {
   die('invalid arguments, run with --help to see usage.\n\n');
 }
 
-var source = args[0];
-var destination = args[1];
+let source = args[0];
+let destination = args[1];
 
-var readStdin = source === '-';
-var writeStdout = !destination;
+const readStdin = source === '-';
 
 if (source && source[0] !== '/' && !readStdin) {
   source = path.join(process.cwd(), source);
