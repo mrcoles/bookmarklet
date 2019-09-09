@@ -111,7 +111,7 @@ function dataCallback(e, data) {
   let code = bookmarklet.convert(data.code, data.options);
 
   if (makeDemo) {
-    code = bookmarklet.makeDemo(code);
+    code = bookmarklet.makeDemo(code, data.options);
   }
 
   if (destination) {

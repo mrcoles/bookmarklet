@@ -200,7 +200,7 @@ function parseFile(data) {
 
   return {
     code: code.join('\n'),
-    options: options,
+    options,
     errors: errors.length ? errors : null
   };
 }

@@ -1,6 +1,6 @@
 {
   "name": "bookmarklet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A JavaScript bookmarklet compiler and demo page creator with greasemonkey userscript-like metadata options",
   "main": "bookmarklet.js",
   "bin": {
