@@ -38,6 +38,14 @@ function warn(msg) {
   console.error(`[WARN] bookmarklet: ${msg}`);
 }
 
+// flags
+
+const _isArgDemo = arg => arg === '-d' || arg === '--demo';
+
+const makeDemo = args.some(_isArgDemo);
+
+args = args.filter(arg => !_isArgDemo(arg));
+
 // help
 
 if (
@@ -62,6 +70,7 @@ const readStdin = source === '-';
 if (source && source[0] !== '/' && !readStdin) {
   source = path.join(process.cwd(), source);
 }
+
 if (destination) {
   if (destination[0] !== '/') {
     destination = path.join(process.cwd(), destination);
@@ -99,7 +108,12 @@ function dataCallback(e, data) {
     die(data.errors.join('\n'));
   }
 
-  var code = bookmarklet.convert(data.code, data.options);
+  let code = bookmarklet.convert(data.code, data.options);
+
+  if (makeDemo) {
+    code = bookmarklet.makeDemo(code);
+  }
+
   if (destination) {
     fs.writeFileSync(destination, code);
   } else {

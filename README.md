@@ -1,6 +1,4 @@
-
-Bookmarklet: sane development, familiar format
-==============================================
+# Bookmarklet: sane development, familiar format
 
 [![Build Status](https://travis-ci.org/mrcoles/bookmarklet.svg?branch=master)](https://travis-ci.org/mrcoles/bookmarklet)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
@@ -35,7 +33,7 @@ Also, if you’re just looking for a quick way to throw together a bookmarklet, 
 The dependency can be found on [NPM as “bookmarklet”](https://www.npmjs.org/package/bookmarklet). You can install it with:
 
 ```bash
-npm install -g bookmarklet
+npm install bookmarklet
 ```
 
 ### Usage
@@ -44,11 +42,14 @@ You can easily see usage by running `bookmarklet -h`:
 
 ```bash
 > bookmarklet -h
-Bookmarklet v0.0.1 usage: bookmarklet source [destination]
+Bookmarklet v0.0.1 usage: bookmarklet [-d | --demo] source [destination]
 
+-d | --demo - output a demo HTML page for sharing the bookmarklet
 source      - path to file to read from or `-` for stdin
 destination - path to file to write to
 ```
+
+The default output is the raw bookmarlet code. _NEW_ add the `--demo` flag to output a test HTML page that includes the bookmarklet on it.
 
 ### Testing
 

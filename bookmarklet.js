@@ -205,11 +205,54 @@ function parseFile(data) {
   };
 }
 
+function makeDemo(bookmarkletCode, options) {
+  options = options || {};
+
+  const name = options.name || 'Bookmarklet';
+  const createdWith = 'https://github.com/mrcoles/bookmarklet';
+
+  const html = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      html,body,div { margin: 0; padding: 0; font: normal 16px/24px Helvetica Neue, Helvetica, sans-serif; color: #333; }
+      #main { max-width: 630px; margin: 3em auto; }
+      .bookmarklet { display: inline-block; padding: .5em 1em; color: #fff; background: #50dcf3; border-radius: 4px; text-decoration: none; }
+      a { color: #50dcf3; }
+      .dim { color: #999; }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <h1>${name}</h1>
+      <p>
+        Drag this button to your bookmarks bar to save it as a bookmarklet:
+      </p>
+      <p>
+        <a class="bookmarklet" href="${bookmarkletCode}">${name}</a>
+      </p>
+      ${
+        options.repo
+          ? `<p>See source at <a href="${options.repo}">${options.repo}</a></p>`
+          : ''
+      }
+      <p class="dim">This page was created with the <a href="${createdWith}">bookmarklet</a> npm library.</p>
+    </div>
+  </body>
+</html>
+`;
+
+  return html;
+}
+
 // Exports
 
 Object.assign(exports, {
-  version: version,
-  convert: convert,
-  parseFile: parseFile,
-  metadata: metadata
+  version,
+  convert,
+  parseFile,
+  makeDemo,
+  metadata
 });
