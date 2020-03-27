@@ -1,6 +1,6 @@
 {
   "name": "bookmarklet",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "A JavaScript bookmarklet compiler and demo page creator with greasemonkey userscript-like metadata options",
   "main": "bookmarklet.js",
   "bin": {
@@ -20,9 +20,9 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
     "md5": "^2.2.1",
-    "uglify-js": "^3.3.11"
+    "uglify-js": "^3.8.0"
   }
 }
