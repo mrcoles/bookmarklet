@@ -130,7 +130,6 @@ async function minify(code) {
 }
 
 async function convert(code, options) {
-  code = await minify(code);
   let stylesCode = '';
 
   if (options.script) {
@@ -139,7 +138,6 @@ async function convert(code, options) {
       let { path, opts } = extractOptions(s);
       code = loadScript(code, path, opts.loadOnce);
     });
-    code = await minify(code);
   }
 
   if (options.style) {
@@ -147,11 +145,10 @@ async function convert(code, options) {
       let { path, opts } = extractOptions(s);
       stylesCode = loadStyle(stylesCode, path, opts.loadOnce);
     });
-    const minifiedStyles = await minify(stylesCode);
-    code = minifiedStyles + code;
+    code = stylesCode + code;
   }
 
-  code = `(function(){${code}})()`;
+  code = await minify(`(function(){${code}})()`);
   return `javascript:${encodeURIComponent(code)}`;
 }
 
