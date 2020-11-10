@@ -12,7 +12,10 @@
   "scripts": {
     "test": "bash test/run.sh"
   },
-  "repository": "https://github.com/rpavlik/bookmarklet#babel7",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpavlik/bookmarklet.git#babel7"
+  },
   "keywords": [
     "bookmarklet"
   ],
