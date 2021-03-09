@@ -1,9 +1,9 @@
-const version = [1, 0, 1];
+const version = [2, 0, 0];
 
-const babel = require('babel-core');
-const babelPresetEnv = require('babel-preset-env');
+const babel = require('@babel/core');
+const babelPresetEnv = require('@babel/preset-env');
 const md5 = require('md5');
-const uglify = require('uglify-js');
+const Terser = require('terser');
 
 // metadata
 const str = 1;
@@ -114,7 +114,7 @@ function loadStyle(code, path, loadOnce) {
 
 function minify(code) {
   let result = babel.transform(code, { presets: [babelPresetEnv] });
-  return uglify.minify(result.code).code;
+  return Terser.minify(result.code).code;
 }
 
 function convert(code, options) {
