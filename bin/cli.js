@@ -17,7 +17,7 @@ if (['-V', '--version'].some(flag => args.indexOf(flag) !== -1)) {
 
 function help() {
   console.error(`
-Bookmarklet (Babel 7 fork) v${bookmarklet.version.join('.')}
+Bookmarklet v${bookmarklet.version.join('.')}
 
 usage: bookmarklet source [destination]
 
