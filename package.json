@@ -1,5 +1,5 @@
 {
-  "name": "bookmarklet-babel7",
+  "name": "bookmarklet",
   "version": "3.0.0",
   "description": "A JavaScript bookmarklet compiler and demo page creator with greasemonkey userscript-like metadata options",
   "main": "bookmarklet.js",
@@ -12,19 +12,23 @@
   "scripts": {
     "test": "bash test/run.sh"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rpavlik/bookmarklet.git#babel7"
-  },
+  "repository": "github:mrcoles/bookmarklet",
   "keywords": [
     "bookmarklet"
   ],
-  "author": "Peter Coles, Ryan Pavlik",
+  "author": {
+    "name": "Peter Coles"
+  },
+  "contributors": [
+    {
+      "name": "Ryan Pavlik"
+    }
+  ],
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
+    "@babel/core": "^7.10.0",
+    "@babel/preset-env": "^7.10.0",
     "md5": "^2.2.1",
     "terser": "^4.6.7"
   }
