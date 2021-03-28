@@ -232,9 +232,8 @@ function makeDemo(bookmarkletCode, options) {
     <style>
       html,body,div { margin: 0; padding: 0; font: normal 16px/24px Helvetica Neue, Helvetica, sans-serif; color: #333; }
       #main { max-width: 630px; margin: 3em auto; }
-      .bookmarklet { display: inline-block; padding: .5em 1em; color: #fff; background: #50dcf3; border-radius: 4px; text-decoration: none; }
-      a { color: #50dcf3; }
-      .dim { color: #999; }
+      .bookmarklet { display: inline-block; padding: .5em 1em; color: #fff; background: #33e; border-radius: 4px; text-decoration: none; }
+      a { color: #33e; }
     </style>
   </head>
   <body>
@@ -251,7 +250,7 @@ function makeDemo(bookmarkletCode, options) {
           ? `<p>See source at <a href="${options.repo}">${options.repo}</a></p>`
           : ''
       }
-      <p class="dim">This page was created with the <a href="${createdWith}">bookmarklet</a> npm library.</p>
+      <p>This page was created with the <a href="${createdWith}">bookmarklet</a> npm library.</p>
     </div>
   </body>
 </html>
