@@ -1,7 +1,7 @@
 const version = [2, 0, 0];
 
-const babel = require('@babel/core');
-const babelPresetEnv = require('@babel/preset-env');
+// const babel = require('@babel/core');
+// const babelPresetEnv = require('@babel/preset-env');
 const md5 = require('md5');
 const Terser = require('terser');
 
@@ -113,19 +113,19 @@ function loadStyle(code, path, loadOnce) {
 }
 
 async function minify(code) {
-  let result = babel.transform(code, {
-    presets: [
-      [
-        babelPresetEnv,
-        {
-          targets: 'ie 8', // '> 0.25%, not dead',
-          corejs: { version: '3.9', proposals: true },
-          useBuiltIns: 'usage'
-        }
-      ]
-    ]
-  });
-  result = await Terser.minify(code);
+  // const result = babel.transform(code, {
+  //   presets: [
+  //     [
+  //       babelPresetEnv,
+  //       {
+  //         targets: 'ie 8', // '> 0.25%, not dead',
+  //         corejs: { version: '3.9', proposals: true },
+  //         useBuiltIns: 'usage'
+  //       }
+  //     ]
+  //   ]
+  // });
+  const result = await Terser.minify(code);
   return result.code;
 }
 
