@@ -27,9 +27,11 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "@babel/core": "^7.10.0",
-    "@babel/preset-env": "^7.10.0",
+    "@babel/core": "^7.13.13",
+    "@babel/preset-env": "^7.13.12",
+    "core-js": "^3.9.1",
     "md5": "^2.2.1",
-    "terser": "^4.6.7"
+    "regenerator-runtime": "^0.13.7",
+    "terser": "^5.6.1"
   }
 }

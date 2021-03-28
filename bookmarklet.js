@@ -112,13 +112,25 @@ function loadStyle(code, path, loadOnce) {
     `;
 }
 
-function minify(code) {
-  let result = babel.transform(code, { presets: [babelPresetEnv] });
-  return Terser.minify(result.code).code;
+async function minify(code) {
+  let result = babel.transform(code, {
+    presets: [
+      [
+        babelPresetEnv,
+        {
+          targets: 'ie 8', // '> 0.25%, not dead',
+          corejs: { version: '3.9', proposals: true },
+          useBuiltIns: 'usage'
+        }
+      ]
+    ]
+  });
+  result = await Terser.minify(code);
+  return result.code;
 }
 
-function convert(code, options) {
-  code = minify(code);
+async function convert(code, options) {
+  code = await minify(code);
   let stylesCode = '';
 
   if (options.script) {
@@ -127,7 +139,7 @@ function convert(code, options) {
       let { path, opts } = extractOptions(s);
       code = loadScript(code, path, opts.loadOnce);
     });
-    code = minify(code);
+    code = await minify(code);
   }
 
   if (options.style) {
@@ -135,7 +147,8 @@ function convert(code, options) {
       let { path, opts } = extractOptions(s);
       stylesCode = loadStyle(stylesCode, path, opts.loadOnce);
     });
-    code = minify(stylesCode) + code;
+    const minifiedStyles = await minify(stylesCode);
+    code = minifiedStyles + code;
   }
 
   code = `(function(){${code}})()`;
@@ -154,7 +167,7 @@ function parseFile(data) {
   let errors = [];
 
   // parse file and gather options from metadata block if available
-  data.match(/[^\r\n]+/g).forEach(function(line, i, lines) {
+  data.match(/[^\r\n]+/g).forEach(function (line, i, lines) {
     // comment
     if (rComment.test(line)) {
       let comment = line.replace(rComment, '').trim(),

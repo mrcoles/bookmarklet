@@ -25,8 +25,7 @@ usage: bookmarklet source [destination]
    destination - path to file to write to
 
 More info: https://github.com/mrcoles/bookmarklet
-    `
-  );
+  `);
 }
 
 function die(msg) {
@@ -48,10 +47,7 @@ args = args.filter(arg => !_isArgDemo(arg));
 
 // help
 
-if (
-  args.length == 0 ||
-  args.some(arg => arg === '-h' || arg === '--help')
-) {
+if (args.length == 0 || args.some(arg => arg === '-h' || arg === '--help')) {
   help();
   process.exit(0);
 }
@@ -108,17 +104,22 @@ function dataCallback(e, data) {
     die(data.errors.join('\n'));
   }
 
-  let code = bookmarklet.convert(data.code, data.options);
+  return bookmarklet
+    .convert(data.code, data.options)
+    .then(code => {
+      if (makeDemo) {
+        code = bookmarklet.makeDemo(code, data.options);
+      }
 
-  if (makeDemo) {
-    code = bookmarklet.makeDemo(code, data.options);
-  }
-
-  if (destination) {
-    fs.writeFileSync(destination, code);
-  } else {
-    console.log(code);
-  }
+      if (destination) {
+        fs.writeFileSync(destination, code);
+      } else {
+        console.log(code);
+      }
+    })
+    .catch(e => {
+      die(e);
+    });
 }
 
 if (source !== '-') {
