@@ -19,10 +19,12 @@ function help() {
   console.error(`
 Bookmarklet v${bookmarklet.version.join('.')}
 
-usage: bookmarklet source [destination]
+Usage: bookmarklet [options] source [destination]
+  source       path to file to read from or - for stdin',
+  destination  path to file to write to
 
-   source - path to file to read from or for stdin',
-   destination - path to file to write to
+Options:
+  -d, --demo   generate a demo HTML page
 
 More info: https://github.com/mrcoles/bookmarklet
   `);
