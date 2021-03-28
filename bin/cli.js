@@ -20,7 +20,7 @@ function help() {
 Bookmarklet v${bookmarklet.version.join('.')}
 
 Usage: bookmarklet [options] source [destination]
-  source       path to file to read from or - for stdin',
+  source       path to file to read from or - for stdin
   destination  path to file to write to
 
 Options:
