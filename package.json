@@ -27,9 +27,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "core-js": "^3.9.1",
     "md5": "^2.2.1",
-    "regenerator-runtime": "^0.13.7",
     "terser": "^5.6.1"
   }
 }
