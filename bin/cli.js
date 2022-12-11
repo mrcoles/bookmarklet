@@ -15,6 +15,7 @@ const argv = yargs(process.argv.slice(2))
   .option('version', {alias: 'V', type: 'boolean'})
   .option('help', {alias: 'h', type: 'boolean'})
   .option('demo', {alias: 'd', type: 'boolean'})
+  .option('minify', {alias: 'm', type: 'string'})
   .argv;
 
 let [source, destination] = argv._;
@@ -34,6 +35,7 @@ Usage: bookmarklet [options] source [destination]
 
 Options:
   -d, --demo   generate a demo HTML page
+  -m, --minify options for minifier in JSON format
 
 More info: https://github.com/mrcoles/bookmarklet
   `);
@@ -57,6 +59,18 @@ const makeDemo = argv.demo;
 if (argv._.length == 0 || argv.help) {
   help();
   process.exit(0);
+}
+
+// minify options
+
+let minifyOptions;
+
+if (argv.minify) {
+  try {
+    minifyOptions = JSON.parse(argv.minify);
+  } catch (e) {
+    die(`Fail parsing minify option: ${e.message}`);
+  }
 }
 
 // file paths
@@ -109,7 +123,7 @@ function dataCallback(e, data) {
   }
 
   return bookmarklet
-    .convert(data.code, data.options)
+    .convert(data.code, data.options, minifyOptions)
     .then(code => {
       if (makeDemo) {
         code = bookmarklet.makeDemo(code, data.options);

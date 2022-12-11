@@ -112,7 +112,7 @@ function loadStyle(code, path, loadOnce) {
     `;
 }
 
-async function minify(code) {
+async function minify(code, minifyOptions) {
   // const result = babel.transform(code, {
   //   presets: [
   //     [
@@ -125,12 +125,12 @@ async function minify(code) {
   //     ]
   //   ]
   // });
-  const result = await Terser.minify(code);
+  const result = await Terser.minify(code, minifyOptions);
   return result.code;
 }
 
-async function convert(code, options) {
-  code = await minify(code);
+async function convert(code, options, minifyOptions) {
+  code = await minify(code, minifyOptions);
   let stylesCode = '';
 
   if (options.script) {
@@ -139,7 +139,7 @@ async function convert(code, options) {
       let { path, opts } = extractOptions(s);
       code = loadScript(code, path, opts.loadOnce);
     });
-    code = await minify(code);
+    code = await minify(code, minifyOptions);
   }
 
   if (options.style) {
@@ -147,7 +147,7 @@ async function convert(code, options) {
       let { path, opts } = extractOptions(s);
       stylesCode = loadStyle(stylesCode, path, opts.loadOnce);
     });
-    const minifiedStyles = await minify(stylesCode);
+    const minifiedStyles = await minify(stylesCode, minifyOptions);
     code = minifiedStyles + code;
   }
 
