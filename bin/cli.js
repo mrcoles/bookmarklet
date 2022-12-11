@@ -2,15 +2,24 @@
 
 const path = require('path');
 const fs = require('fs');
+const yargs = require('yargs/yargs');
 const bookmarklet = require('../bookmarklet');
 
 //
 // Input parsing
 //
 
-let args = process.argv.slice(2);
+const argv = yargs(process.argv.slice(2))
+  .command('<source> [destination]', false)
+  .version(false).help(false)
+  .option('version', {alias: 'V', type: 'boolean'})
+  .option('help', {alias: 'h', type: 'boolean'})
+  .option('demo', {alias: 'd', type: 'boolean'})
+  .argv;
 
-if (['-V', '--version'].some(flag => args.indexOf(flag) !== -1)) {
+let [source, destination] = argv._;
+
+if (argv.version) {
   console.log(bookmarklet.version.join('.'));
   process.exit(0);
 }
@@ -41,27 +50,20 @@ function warn(msg) {
 
 // flags
 
-const _isArgDemo = arg => arg === '-d' || arg === '--demo';
-
-const makeDemo = args.some(_isArgDemo);
-
-args = args.filter(arg => !_isArgDemo(arg));
+const makeDemo = argv.demo;
 
 // help
 
-if (args.length == 0 || args.some(arg => arg === '-h' || arg === '--help')) {
+if (argv._.length == 0 || argv.help) {
   help();
   process.exit(0);
 }
 
 // file paths
 
-if (args.length > 2) {
+if (argv._.length > 2) {
   die('invalid arguments, run with --help to see usage.\n\n');
 }
-
-let source = args[0];
-let destination = args[1];
 
 const readStdin = source === '-';
 
