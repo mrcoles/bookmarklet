@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/mrcoles/bookmarklet.svg?branch=master)](https://travis-ci.org/mrcoles/bookmarklet)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-Bookmarklet is a nodejs module for compiling bookmarklets in server-side code and directly from the shell. You can run it on any JavaScript file—it will minify it using uglify-js, wrap it in a self executing function, and return an escaped bookmarklet.
+Bookmarklet is a nodejs module for compiling bookmarklets in server-side code and directly from the shell. You can run it on any JavaScript file—it will minify it using [terser][], wrap it in a self executing function, and return an escaped bookmarklet.
 
 More so, it supports a metadata block—modeled after the [greasemonkey userscript metadata block](http://wiki.greasespot.net/Metadata_Block)—to specify metadata, external stylesheets and script includes, which can look like this:
 
@@ -42,11 +42,15 @@ You can easily see usage by running `bookmarklet -h`:
 
 ```bash
 > bookmarklet -h
-Bookmarklet v0.0.1 usage: bookmarklet [-d | --demo] source [destination]
+Bookmarklet v3.0.0
 
--d | --demo - output a demo HTML page for sharing the bookmarklet
-source      - path to file to read from or `-` for stdin
-destination - path to file to write to
+Usage: bookmarklet [options] source [destination]
+  source       path to file to read from or - for stdin
+  destination  path to file to write to
+
+Options:
+  -d, --demo   generate a demo HTML page
+  -m, --minify options for minifier in JSON format
 ```
 
 The default output is the raw bookmarlet code. _NEW_ add the `--demo` flag to output a test HTML page that includes the bookmarklet on it.
@@ -54,3 +58,7 @@ The default output is the raw bookmarlet code. _NEW_ add the `--demo` flag to ou
 ### Testing
 
 A very basic test script can be run via `bash test/run.sh`
+
+
+
+[terser]: https://github.com/terser/terser
