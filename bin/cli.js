@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const yargs = require('yargs/yargs');
+const JSON5 = require('json5');
 const bookmarklet = require('../bookmarklet');
 
 //
@@ -67,7 +68,7 @@ let minifyOptions;
 
 if (argv.minify) {
   try {
-    minifyOptions = JSON.parse(argv.minify);
+    minifyOptions = JSON5.parse(argv.minify);
   } catch (e) {
     die(`Fail parsing minify option: ${e.message}`);
   }
