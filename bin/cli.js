@@ -2,15 +2,26 @@
 
 const path = require('path');
 const fs = require('fs');
+const yargs = require('yargs/yargs');
+const JSON5 = require('json5');
 const bookmarklet = require('../bookmarklet');
 
 //
 // Input parsing
 //
 
-let args = process.argv.slice(2);
+const argv = yargs(process.argv.slice(2))
+  .command('<source> [destination]', false)
+  .version(false).help(false)
+  .option('version', {alias: 'V', type: 'boolean'})
+  .option('help', {alias: 'h', type: 'boolean'})
+  .option('demo', {alias: 'd', type: 'boolean'})
+  .option('minify', {alias: 'm', type: 'string'})
+  .argv;
 
-if (['-V', '--version'].some(flag => args.indexOf(flag) !== -1)) {
+let [source, destination] = argv._;
+
+if (argv.version) {
   console.log(bookmarklet.version.join('.'));
   process.exit(0);
 }
@@ -25,6 +36,7 @@ Usage: bookmarklet [options] source [destination]
 
 Options:
   -d, --demo   generate a demo HTML page
+  -m, --minify options for minifier in JSON format
 
 More info: https://github.com/mrcoles/bookmarklet
   `);
@@ -41,27 +53,32 @@ function warn(msg) {
 
 // flags
 
-const _isArgDemo = arg => arg === '-d' || arg === '--demo';
-
-const makeDemo = args.some(_isArgDemo);
-
-args = args.filter(arg => !_isArgDemo(arg));
+const makeDemo = argv.demo;
 
 // help
 
-if (args.length == 0 || args.some(arg => arg === '-h' || arg === '--help')) {
+if (argv._.length == 0 || argv.help) {
   help();
   process.exit(0);
 }
 
-// file paths
+// minify options
 
-if (args.length > 2) {
-  die('invalid arguments, run with --help to see usage.\n\n');
+let minifyOptions;
+
+if (argv.minify) {
+  try {
+    minifyOptions = JSON5.parse(argv.minify);
+  } catch (e) {
+    die(`Fail parsing minify option: ${e.message}`);
+  }
 }
 
-let source = args[0];
-let destination = args[1];
+// file paths
+
+if (argv._.length > 2) {
+  die('invalid arguments, run with --help to see usage.\n\n');
+}
 
 const readStdin = source === '-';
 
@@ -107,7 +124,7 @@ function dataCallback(e, data) {
   }
 
   return bookmarklet
-    .convert(data.code, data.options)
+    .convert(data.code, data.options, minifyOptions)
     .then(code => {
       if (makeDemo) {
         code = bookmarklet.makeDemo(code, data.options);
